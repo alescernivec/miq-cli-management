@@ -17,7 +17,7 @@ Usage: /home/ales/workspace/kyndryl-cisco/miq-cli-management/miq-cli-role-manage
     -u, --username USERNAME          [Mandatory] ManageIQ username
     -p, --password PASSWORD          [Mandatory] ManageIQ password
         --url URL                    [Mandatory] URL to the ManageIQ API
-    -a, --action ACTION              [Mandatory] Action to take (assign, unnassign
+    -a, --action ACTION              [Mandatory] Action. Must be one of ["assign_feature", "unassign_feature", "list_role", "create_role"] 
     -r, --role ROLE
     -f, --feature FEATURE
 ```
@@ -36,8 +36,12 @@ ruby miq-cli-role-management.rb -u <username> -p <password> --url <url to api of
 
 ## Development
 
+Best to set up environment using `rvm` with a specific `gemset`, then use `bundle install` within the `gemset`. 
+
 ## Contributing
 
-
+Accepting PRs. Thank you!
 
 ## License
+
+Apache 2.0 
