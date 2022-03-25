@@ -1,6 +1,8 @@
 require 'optparse'
 require 'manageiq-api-client'
-require "json"
+require 'json'
+
+possible_actions= %w[assign_feature unassign_feature list_role create_role]
 
 # Create MIQ client
 #
@@ -36,14 +38,14 @@ option_parser =  OptionParser.new do |opt|
   opt.on('-u', '--username USERNAME', '[Mandatory] ManageIQ username') { |o| options[:username] = o }
   opt.on('-p','--password PASSWORD', '[Mandatory] ManageIQ password') { |o| options[:password] = o }
   opt.on('--url URL', '[Mandatory] URL to the ManageIQ API') { |o| options[:url] = o }
-  opt.on('-a', '--action ACTION', '[Mandatory] Action to take') { |o| options[:action] = o }
-  opt.on('-r', '--role ROLE') { |o| options[:role] = o }
-  opt.on('-f', '--feature FEATURE') { |o| options[:feature] = o }
+  opt.on('-a', '--action ACTION', '[Mandatory] Action. Must be one of '+possible_actions.to_s) { |o| options[:action] = o }
+  opt.on('-r', '--role ROLE', 'Role to be considered in the action') { |o| options[:role] = o }
+  opt.on('-f', '--feature FEATURE', 'Feature to be considered in the action') { |o| options[:feature] = o }
 end
 
 option_parser.parse!
 
-if options[:username].nil? || options[:password].nil? || options[:url].nil? || options[:action].nil?
+if options[:username].nil? || options[:password].nil? || options[:url].nil? || options[:action].nil? || !possible_actions.include?(options[:action])
   puts option_parser.help
   exit 1
 end
@@ -55,6 +57,7 @@ ARGV.each do|f|
   if options[:action] == "list_role"
     puts "Listing role: #{f}"
     role = miq_client.roles.where(:name => f).first
+    puts role.attributes.to_s
   end
 
   if options[:action] == "assign_feature"
@@ -67,7 +70,7 @@ ARGV.each do|f|
   end
 
   if options[:action] == "unassign_feature"
-    puts "Unassigning feature #{f} from role #{options[:role]}."
+    puts "Unassign feature #{f} from role #{options[:role]}."
     assign_feature_to_role(miq_client,options[:role], f, "unassign" )
   end
 
