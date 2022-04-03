@@ -19,6 +19,27 @@ def create_client(url, username, password)
   miq
 end
 
+# Create new role
+#
+# @param miq_client client instance
+# @param name role name
+
+def create_role(miq_client, name)
+  string_hash = {
+    "action" => "create",
+    "resource" =>  {
+      "name" => "#{name}",
+      "settings" => {
+        "restrictions" => { "vms" => "user" }
+      },
+      "features" => []
+    }
+  }
+  miq_client.connection.post "roles"  do string_hash  end
+
+  puts "Role successfully created"
+end
+
 # Assign or unassign a feature to a role
 #
 # @param miq_client client instance
@@ -67,6 +88,7 @@ ARGV.each do|f|
 
   if options[:action] == "create_role"
     puts "Creating role #{f}"
+    create_role(miq_client, f)
   end
 
   if options[:action] == "unassign_feature"

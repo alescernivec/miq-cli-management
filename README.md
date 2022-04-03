@@ -23,13 +23,17 @@ Usage: /home/ales/workspace/kyndryl-cisco/miq-cli-management/miq-cli-role-manage
 ```
 ### Examples
 
+Creating new role:
+```
+ruby miq-cli-role-management.rb -u <username> -p <password> --url <url to api of miq> -a create_role <role name>
+```
+
 Assigning a feature to a role:
 ```
 ruby miq-cli-role-management.rb -u <username> -p <password> --url <url to api of miq> -a assign_feature -r EvmRole-user physical_infra_overview_view
 ```
 
 Unassigning a feature to a role:
-
 ```
 ruby miq-cli-role-management.rb -u <username> -p <password> --url <url to api of miq> -a unassign_feature -r EvmRole-user physical_infra_overview_view
 ```
